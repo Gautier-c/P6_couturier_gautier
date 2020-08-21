@@ -1,9 +1,11 @@
-const express = require('express');
-const bodyparser = require('body-parser');
-const mongoose = require('mongoose');
-const saucesRoutes = require('./routes/sauces');
-const userRoutes = require('./routes/user');
+const express = require('express'); //Module express
+const bodyparser = require('body-parser'); //module body parser
+const mongoose = require('mongoose'); //module mongoose
+const saucesRoutes = require('./routes/sauces'); // route sauces
+const userRoutes = require('./routes/user'); // route user
 const path = require('path');
+const mongoMask = require('mongo-mask'); //module mongomask masque les données
+const helmet = require("helmet"); // contre les attaque sur les cookies
 
 const app = express();
 
@@ -25,5 +27,7 @@ app.use(bodyparser.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
+
+app.use(helmet());
 
 module.exports = app;
