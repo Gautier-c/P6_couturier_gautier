@@ -28,6 +28,19 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 
+const map =
+  { id: '_id' }
+
+app.get('/item', (req, res, next) => {
+  const fields = req.query.fields ? mongoMask(req.query.fields, { map }) : null
+  mongoCollection.findOne({}, fields, (err, doc) => {
+    if (err) return next(err)
+    doc.id = doc._id
+    delete doc._id
+    res.json(doc)
+  })
+})
+
 app.use(helmet());
 
 module.exports = app;
