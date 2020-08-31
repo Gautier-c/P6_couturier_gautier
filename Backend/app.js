@@ -4,10 +4,26 @@ const mongoose = require('mongoose'); //module mongoose
 const saucesRoutes = require('./routes/sauces'); // route sauces
 const userRoutes = require('./routes/user'); // route user
 const path = require('path');
-const mongoMask = require('mongo-mask'); //module mongomask masque les données
+
 const helmet = require("helmet"); // contre les attaque sur les cookies
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const app = express();
+
+app.use(helmet());
+// Rate Limiting
+const limit = rateLimit({
+  max: 100,// max requests
+  windowMs: 60 * 60 * 1000, // 1 Hour of 'ban' / lockout 
+  message: 'Too many requests' // message to send
+});
+app.use('/routeName', limit); // Setting limiter on specific route
+// Data Sanitization against NoSQL Injection Attacks
+app.use(mongoSanitize());
+// Data Sanitization against XSS attacks
+app.use(xss());
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,19 +44,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 
-const map =
-  { id: '_id' }
 
-app.get('/item', (req, res, next) => {
-  const fields = req.query.fields ? mongoMask(req.query.fields, { map }) : null
-  mongoCollection.findOne({}, fields, (err, doc) => {
-    if (err) return next(err)
-    doc.id = doc._id
-    delete doc._id
-    res.json(doc)
-  })
-})
 
-app.use(helmet());
 
 module.exports = app;
