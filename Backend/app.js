@@ -15,11 +15,11 @@ const app = express();
 app.use(helmet());
 // Rate Limiting
 const limit = rateLimit({
-  max: 100,// max requests
+  max: 20,// max requests
   windowMs: 60 * 60 * 1000, // 1 Hour of 'ban' / lockout 
   message: 'Too many requests' // message to send
 });
-app.use('/routeName', limit); // Setting limiter on specific route
+app.use('./routes/user', limit); // Setting limiter on specific route
 // Data Sanitization against NoSQL Injection Attacks
 app.use(mongoSanitize());
 // Data Sanitization against XSS attacks
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect('mongodb+srv://gautier:gautier@cluster0.uj5ln.mongodb.net/Cluster0?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://devOfApp:devofapp@cluster0.uj5ln.mongodb.net/Cluster0?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
