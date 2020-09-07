@@ -6,9 +6,9 @@ const userRoutes = require('./routes/user'); // route user
 const path = require('path');
 
 const helmet = require("helmet"); // contre les attaque sur les cookies
-const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');  //Limite le nombre de connexion possible
+const mongoSanitize = require('express-mongo-sanitize');  //Contre l'injection
+const xss = require('xss-clean');       //Contre les attaques XSS
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect('mongodb+srv://devOfApp:devofapp@cluster0.uj5ln.mongodb.net/Cluster0?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://devOfApp:devofapp@cluster0.uj5ln.mongodb.net/Cluster0?retryWrites=true&w=majority',  //Pour se connecter à mongoDB
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))

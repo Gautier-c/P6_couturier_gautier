@@ -5,8 +5,8 @@ exports.createSauce = (req, res, next) => { //Création d'une sauce
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     const sauce = new Sauce ({
-        ...sauceObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        ...sauceObject,   
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` //Enregistrement de l'image
     })
     sauce.save()
     .then(() => res.status(201).json({ message : "Sauce créée !"}))
@@ -60,7 +60,7 @@ exports.likeSauce = (req, res, next) => { //Ajout Like/Dislike
       Sauce.updateOne(
         { _id: sauceId },
         {
-          $push: { usersLiked: user },
+          $push: { usersLiked: user }, //Ajout mongoDB
           $inc: { likes: like },
         }
       )
@@ -74,7 +74,7 @@ exports.likeSauce = (req, res, next) => { //Ajout Like/Dislike
       Sauce.updateOne(
         { _id: sauceId },
         {
-          $push : {usersDisliked: user },
+          $push : {usersDisliked: user }, //Ajout mongoDB
           $inc: { dislikes: -like},
         }
       )
@@ -89,7 +89,7 @@ exports.likeSauce = (req, res, next) => { //Ajout Like/Dislike
         Sauce.updateOne(
           { _id: sauceId },
           {
-            $pull: { usersLiked: user },
+            $pull: { usersLiked: user }, //Retire mongoDB
             $inc: { likes: -1 },
           }
         )
@@ -100,7 +100,7 @@ exports.likeSauce = (req, res, next) => { //Ajout Like/Dislike
         Sauce.updateOne(
           { _id: sauceId },
           {
-            $pull: { usersDisliked: user },
+            $pull: { usersDisliked: user }, //Retire mongoDB
             $inc: { dislikes: -1 },
           }
         )

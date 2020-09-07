@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');     //Appel plugin mongoose
 
-const sauceSchema = mongoose.Schema({ // Model sauce
+const sauceSchema = mongoose.Schema({     // Modele des sauces 
     userId: { type: String, required: true },
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },
