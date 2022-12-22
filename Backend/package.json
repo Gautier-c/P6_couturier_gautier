@@ -18,7 +18,7 @@
     "express-validator": "^6.6.1",
     "helmet": "^4.1.0",
     "json-mask": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "maskdata": "^1.1.2",
     "mongo-mask": "^1.1.0",
     "mongoose": "^5.10.2",
